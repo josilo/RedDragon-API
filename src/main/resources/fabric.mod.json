@@ -1,0 +1,33 @@
+{
+	"schemaVersion": 1,
+	"id": "reddragonapi",
+	"version": "${version}",
+	"name": "RedDragon API",
+	"description": "Adds basic API functionality required by other RedDragon mods.",
+	"authors": [
+		"Team RedDragon"
+	],
+	"contact": {
+		"homepage": "https://github.com/TeamRedDragon/RedDragon-API",
+		"sources": "https://github.com/TeamRedDragon/RedDragon-API"
+	},
+	"license": "MMPLv2",
+	"icon": "assets/reddragonapi/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"reddragon.api.RedDragonApiMod"
+		]
+	},
+	"mixins": [
+		"reddragonapi.mixin.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.7.4",
+		"fabric": "*",
+		"minecraft": "1.16.x"
+	},
+	"suggests": {
+		"flamingo": "*"
+	}
+}
