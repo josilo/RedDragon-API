@@ -1,4 +1,4 @@
-package reddragon.api.fluid;
+package reddragon.api.configs;
 
 import java.util.Locale;
 
