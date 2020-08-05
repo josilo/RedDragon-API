@@ -1,4 +1,6 @@
-# RedDragon API
+<p align="center">
+<img src="https://raw.githubusercontent.com/TeamRedDragon/RedDragon-API/master/misc/reddragon-api-banner.png">
+</p>
 
 The core API dependency for all RedDragon mods.
 
