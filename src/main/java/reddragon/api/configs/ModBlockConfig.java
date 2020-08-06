@@ -23,7 +23,7 @@ public class ModBlockConfig implements BlockHolder {
 		this(new Block(settings));
 	}
 
-	public void register(final String namespace, final String name, ItemGroup itemGroup) {
+	public void register(final String namespace, ItemGroup itemGroup, final String name) {
 		final Identifier identifier = new Identifier(namespace, name.toLowerCase(Locale.ROOT));
 
 		Registry.register(Registry.BLOCK, identifier, block);
