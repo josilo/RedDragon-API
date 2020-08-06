@@ -1,6 +1,9 @@
 package reddragon.api.configs;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.AbstractBlock.Settings;
@@ -19,14 +22,47 @@ import reddragon.api.content.fluids.VaporizingFluidBlock;
 import reddragon.api.utils.FluidUtils;
 
 public final class ModFluidConfig implements BlockHolder {
-	private FlowableFluid stillFluid = null;
-	private FlowableFluid flowingFluid = null;
-	private VaporizingFluidBlock fluidBlock = null;
-	private BucketItem bucketItem = null;
-	private final int color;
+	private int color;
+	private int levelDecreasePerBlock = 1;
+	private int flowSpeed = 5;
+	private boolean ticksRandomly = false;
 
-	public ModFluidConfig(final int color, final boolean ticksRandomly, final int levelDecreasePerBlock, final int tickRate, final ItemGroup itemGroup) {
+	private VaporizingFluidBlock fluidBlock = null;
+
+	// Set during registration:
+
+	private BucketItem bucketItem;
+	private FlowableFluid flowingFluid;
+	private FlowableFluid stillFluid;
+
+	private final Map<Block, Float> vaporizedResultChances = new HashMap<>();
+
+	public ModFluidConfig() {
+		// Use default values.
+	}
+
+	public ModFluidConfig color(final int color) {
 		this.color = color;
+		return this;
+	}
+
+	public ModFluidConfig levelDecreasePerBlock(final int levelDecreasePerBlock) {
+		this.levelDecreasePerBlock = levelDecreasePerBlock;
+		return this;
+	}
+
+	public ModFluidConfig ticksRandomly() {
+		ticksRandomly = true;
+		return this;
+	}
+
+	public ModFluidConfig flowSpeed(final int flowSpeed) {
+		this.flowSpeed = flowSpeed;
+		return this;
+	}
+
+	public void register(final String namespace, final ItemGroup itemGroup, final String name) {
+		// Once we have all data, we can create required objects.
 
 		stillFluid = new AbstractFluid.Still(
 				() -> stillFluid,
@@ -34,7 +70,7 @@ public final class ModFluidConfig implements BlockHolder {
 				() -> fluidBlock,
 				() -> bucketItem,
 				levelDecreasePerBlock,
-				tickRate);
+				flowSpeed);
 
 		flowingFluid = new AbstractFluid.Flowing(
 				() -> stillFluid,
@@ -42,18 +78,23 @@ public final class ModFluidConfig implements BlockHolder {
 				() -> fluidBlock,
 				() -> bucketItem,
 				levelDecreasePerBlock,
-				tickRate);
+				flowSpeed);
 
 		final Settings blockSettings = FabricBlockSettings.copy(Blocks.WATER);
 		if (ticksRandomly) {
 			blockSettings.ticksRandomly();
 		}
+
 		fluidBlock = new VaporizingFluidBlock(stillFluid, blockSettings);
 
-		bucketItem = new BucketItem(stillFluid, new Item.Settings().group(itemGroup).recipeRemainder(Items.BUCKET).maxCount(1));
-	}
+		for (final Entry<Block, Float> chance : vaporizedResultChances.entrySet()) {
+			fluidBlock.addVaporizedResultChance(chance.getKey(), chance.getValue());
+		}
 
-	public void register(final String namespace, final String name) {
+		bucketItem = new BucketItem(stillFluid, new Item.Settings().group(itemGroup).recipeRemainder(Items.BUCKET).maxCount(1));
+
+		// Begin registering all data.
+
 		final Identifier identifier = new Identifier(namespace, name.toLowerCase(Locale.ROOT));
 
 		Registry.register(Registry.FLUID, identifier, stillFluid);
@@ -67,11 +108,7 @@ public final class ModFluidConfig implements BlockHolder {
 	}
 
 	public void addVaporizedResultChance(final Block block, final float weight) {
-		fluidBlock.addVaporizedResultChance(block, weight);
-	}
-
-	public void addVaporizedResultChance(final BlockHolder blockHolder, final float weight) {
-		fluidBlock.addVaporizedResultChance(blockHolder.getBlock(), weight);
+		vaporizedResultChances.put(block, weight);
 	}
 
 	@Override
