@@ -33,27 +33,4 @@ public class ModItemConfig implements ItemHolder {
 	public Item getItem() {
 		return item;
 	}
-
-	public static class FoodBuilder {
-		int hunger;
-		float saturationModifier;
-
-		public FoodBuilder() {
-		}
-
-		public FoodBuilder hunger(int hunger) {
-			this.hunger = hunger;
-			return this;
-		}
-
-		public FoodBuilder saturation(float saturationModifier) {
-			this.saturationModifier = saturationModifier;
-			return this;
-		}
-
-		public ModItemConfig build() {
-			return new ModItemConfig(
-					new FoodComponent.Builder().hunger(hunger).saturationModifier(saturationModifier).build());
-		}
-	}
 }

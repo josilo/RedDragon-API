@@ -12,8 +12,12 @@ public class ModBlockConfig implements BlockHolder {
 
 	private Block block = null;
 
+	public ModBlockConfig(final Block block) {
+		this.block = block;
+	}
+
 	public ModBlockConfig(final AbstractBlock.Settings settings) {
-		block = new Block(settings);
+		this(new Block(settings));
 	}
 
 	public void register(final String namespace, final String name) {
