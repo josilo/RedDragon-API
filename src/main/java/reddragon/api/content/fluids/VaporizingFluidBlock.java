@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Supplier;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -16,6 +17,7 @@ import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
+import reddragon.api.RedDragonApiMod;
 
 public class VaporizingFluidBlock extends FluidBlock {
 
@@ -24,14 +26,14 @@ public class VaporizingFluidBlock extends FluidBlock {
 	}
 
 	private class VaporizedResultChance {
-		public Block block;
+		public Supplier<Block> block;
 		public float accumulatedWeight;
 	}
 
 	private final List<VaporizedResultChance> vaporizedResultChances = new ArrayList<>();
 	private float accumulatedWeight;
 
-	public void addVaporizedResultChance(final Block block, final float weight) {
+	public void addVaporizedResultChance(final Supplier<Block> block, final float weight) {
 		accumulatedWeight += weight;
 
 		final VaporizedResultChance vaporizedResultChance = new VaporizedResultChance();
@@ -46,7 +48,7 @@ public class VaporizingFluidBlock extends FluidBlock {
 
 		for (final VaporizedResultChance vaporizedResultChance : vaporizedResultChances) {
 			if (vaporizedResultChance.accumulatedWeight >= randomValue) {
-				return vaporizedResultChance.block;
+				return vaporizedResultChance.block.get();
 			}
 		}
 
@@ -81,7 +83,13 @@ public class VaporizingFluidBlock extends FluidBlock {
 	}
 
 	private void vaporize(final BlockState state, final World world, final BlockPos pos) {
-		world.setBlockState(pos, getVaporizedResult(world).getDefaultState(), 3);
+
+		final Block resultBlock = getVaporizedResult(world);
+
+		RedDragonApiMod.LOG.info("world: " + world);
+		RedDragonApiMod.LOG.info("resultBlock: " + resultBlock);
+
+		world.setBlockState(pos, resultBlock.getDefaultState(), 3);
 		world.syncWorldEvent(1501, pos, 0); // ExtingushEvent
 	}
 

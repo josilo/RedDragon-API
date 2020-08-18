@@ -32,11 +32,11 @@ public interface RegisterableFluid {
 	}
 
 	default void addVaporizedResultChance(final Block block, final float weight) {
-		getConfig().addVaporizedResultChance(block, weight);
+		getConfig().addVaporizedResultChance(() -> block, weight);
 
 	}
 
 	default void addVaporizedResultChance(final BlockHolder blockHolder, final float weight) {
-		getConfig().addVaporizedResultChance(blockHolder.getBlock(), weight);
+		getConfig().addVaporizedResultChance(() -> blockHolder.getBlock(), weight);
 	}
 }

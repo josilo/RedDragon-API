@@ -99,8 +99,6 @@ public abstract class AbstractFluid extends FlowableFluid {
 
 		final int assumedNewBlockLevel;
 
-		RedDragonApiMod.LOG.info("Flow from " + sourceState.getFluid().toString() + " to " + targetState.getFluid().toString());
-
 		if (sourceState.getFluid() instanceof FlowableFluidAccessor && world instanceof WorldView) {
 			final FlowableFluidAccessor sourceFluid = (FlowableFluidAccessor) sourceState.getFluid();
 
@@ -121,9 +119,6 @@ public abstract class AbstractFluid extends FlowableFluid {
 
 			assumedNewBlockLevel = sourceState.getLevel() - 1;
 		}
-
-		RedDragonApiMod.LOG.info("Assumed source level " + assumedNewBlockLevel + " @" + sourcePosition);
-		RedDragonApiMod.LOG.info("Target level " + targetState.getLevel() + " @" + targetPosition);
 
 		return assumedNewBlockLevel > targetState.getLevel();
 	}

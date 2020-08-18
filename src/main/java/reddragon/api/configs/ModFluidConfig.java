@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Supplier;
 
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.AbstractBlock.Settings;
@@ -35,7 +36,7 @@ public final class ModFluidConfig implements BlockHolder {
 	private FlowableFluid flowingFluid;
 	private FlowableFluid stillFluid;
 
-	private final Map<Block, Float> vaporizedResultChances = new HashMap<>();
+	private final Map<Supplier<Block>, Float> vaporizedResultChances = new HashMap<>();
 
 	public ModFluidConfig() {
 		// Use default values.
@@ -87,7 +88,7 @@ public final class ModFluidConfig implements BlockHolder {
 
 		fluidBlock = new VaporizingFluidBlock(stillFluid, blockSettings);
 
-		for (final Entry<Block, Float> chance : vaporizedResultChances.entrySet()) {
+		for (final Entry<Supplier<Block>, Float> chance : vaporizedResultChances.entrySet()) {
 			fluidBlock.addVaporizedResultChance(chance.getKey(), chance.getValue());
 		}
 
@@ -107,7 +108,7 @@ public final class ModFluidConfig implements BlockHolder {
 		FluidUtils.setupFluidRendering(stillFluid, flowingFluid, identifier, color);
 	}
 
-	public void addVaporizedResultChance(final Block block, final float weight) {
+	public void addVaporizedResultChance(final Supplier<Block> block, final float weight) {
 		vaporizedResultChances.put(block, weight);
 	}
 
