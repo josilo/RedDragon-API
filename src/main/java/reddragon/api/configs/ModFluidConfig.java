@@ -115,4 +115,8 @@ public final class ModFluidConfig implements BlockHolder {
 	public VaporizingFluidBlock getBlock() {
 		return fluidBlock;
 	}
+
+	public FlowableFluid getStillFluid() {
+		return stillFluid;
+	}
 }
