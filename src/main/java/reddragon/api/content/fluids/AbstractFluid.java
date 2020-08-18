@@ -104,16 +104,11 @@ public abstract class AbstractFluid extends FlowableFluid {
 
 			if (direction.getAxis().isVertical()) {
 				assumedNewBlockLevel = 8;
-				RedDragonApiMod.LOG.info("Assuming vertical flow");
 			} else {
 				assumedNewBlockLevel = sourceState.getLevel() - sourceFluid.callGetLevelDecreasePerBlock((WorldView) world);
-				RedDragonApiMod.LOG.info("Assuming horizontal flow");
 			}
 		} else {
 			RedDragonApiMod.LOG.error("Assuming decrease of 1");
-
-			RedDragonApiMod.LOG.error(sourceState.getFluid() instanceof FlowableFluidAccessor);
-			RedDragonApiMod.LOG.error(world instanceof WorldView);
 
 			// Cannot access getter. Assume a decrease of 1.
 
