@@ -20,6 +20,7 @@ import net.minecraft.util.registry.Registry;
 import reddragon.api.content.BlockHolder;
 import reddragon.api.content.fluids.AbstractFluid;
 import reddragon.api.content.fluids.VaporizingFluidBlock;
+import reddragon.api.utils.EnvironmentUtils;
 import reddragon.api.utils.FluidUtils;
 
 public final class ModFluidConfig implements BlockHolder {
@@ -105,7 +106,9 @@ public final class ModFluidConfig implements BlockHolder {
 		Registry.register(Registry.ITEM,
 				new Identifier(namespace, identifier.getPath() + "_bucket"), bucketItem);
 
-		FluidUtils.setupFluidRendering(stillFluid, flowingFluid, identifier, color);
+		EnvironmentUtils.clientOnly(() -> () -> {
+			FluidUtils.setupFluidRendering(stillFluid, flowingFluid, identifier, color);
+		});
 	}
 
 	public void addVaporizedResultChance(final Supplier<Block> block, final float weight) {
