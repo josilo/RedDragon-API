@@ -19,8 +19,12 @@ public class ModItemConfig implements ItemHolder {
 		item = new Item(settings);
 	}
 
-	public ModItemConfig(final FoodComponent foodComponent) {
-		this(new Settings().group(FOOD).food(foodComponent));
+	public ModItemConfig(final FoodComponent foodComponent, int maxCount) {
+		this(new Settings().group(FOOD).food(foodComponent).maxCount(maxCount));
+	}
+
+	public ModItemConfig(final FoodComponent foodComponent, int maxCount, Item recipeRemainder) {
+		this(new Settings().group(FOOD).food(foodComponent).maxCount(maxCount).recipeRemainder(recipeRemainder));
 	}
 
 	public void register(final String namespace, final String name) {
