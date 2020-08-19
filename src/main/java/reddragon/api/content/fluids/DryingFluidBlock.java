@@ -17,40 +17,39 @@ import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
-import reddragon.api.RedDragonApiMod;
 
-public class VaporizingFluidBlock extends FluidBlock {
+public class DryingFluidBlock extends FluidBlock {
 
-	private static final int MIN_LIGHT_LEVEL_FOR_VAPORIZATION = 13;
+	public static final int MIN_LIGHT_LEVEL_FOR_DRYING = 13;
 
-	public VaporizingFluidBlock(final FlowableFluid fluid, final Settings properties) {
+	public DryingFluidBlock(final FlowableFluid fluid, final Settings properties) {
 		super(fluid, properties);
 	}
 
-	private class VaporizedResultChance {
+	private class DriedResult {
 		public Supplier<Block> block;
 		public float accumulatedWeight;
 	}
 
-	private final List<VaporizedResultChance> vaporizedResultChances = new ArrayList<>();
+	private final List<DriedResult> driedResults = new ArrayList<>();
 	private float accumulatedWeight;
 
-	public void addVaporizedResultChance(final Supplier<Block> block, final float weight) {
+	public void addDriedResult(final Supplier<Block> block, final float weight) {
 		accumulatedWeight += weight;
 
-		final VaporizedResultChance vaporizedResultChance = new VaporizedResultChance();
-		vaporizedResultChance.accumulatedWeight = accumulatedWeight;
-		vaporizedResultChance.block = block;
+		final DriedResult driedResult = new DriedResult();
+		driedResult.accumulatedWeight = accumulatedWeight;
+		driedResult.block = block;
 
-		vaporizedResultChances.add(vaporizedResultChance);
+		driedResults.add(driedResult);
 	}
 
-	public Block getVaporizedResult(final World world) {
+	public Block getDriedResult(final World world) {
 		final float randomValue = world.random.nextFloat() * accumulatedWeight;
 
-		for (final VaporizedResultChance vaporizedResultChance : vaporizedResultChances) {
-			if (vaporizedResultChance.accumulatedWeight >= randomValue) {
-				return vaporizedResultChance.block.get();
+		for (final DriedResult driedResult : driedResults) {
+			if (driedResult.accumulatedWeight >= randomValue) {
+				return driedResult.block.get();
 			}
 		}
 
@@ -59,17 +58,17 @@ public class VaporizingFluidBlock extends FluidBlock {
 
 	@Override
 	public void randomTick(final BlockState state, final ServerWorld world, final BlockPos pos, final Random random) {
-		if (canVaporize(state, world, pos)) {
-			vaporize(state, world, pos);
+		if (canDry(state, world, pos)) {
+			dry(state, world, pos);
 		}
 	}
 
-	private boolean canVaporize(final BlockState state, final ServerWorld world, final BlockPos pos) {
+	private boolean canDry(final BlockState state, final ServerWorld world, final BlockPos pos) {
 		if (!isSourceBlock(state)) {
 			return false;
 		}
 
-		if (world.getLightLevel(pos.up(), 0) < MIN_LIGHT_LEVEL_FOR_VAPORIZATION) {
+		if (world.getLightLevel(pos.up(), 0) < MIN_LIGHT_LEVEL_FOR_DRYING) {
 			return false;
 		}
 
@@ -84,12 +83,9 @@ public class VaporizingFluidBlock extends FluidBlock {
 		return true;
 	}
 
-	private void vaporize(final BlockState state, final World world, final BlockPos pos) {
+	private void dry(final BlockState state, final World world, final BlockPos pos) {
 
-		final Block resultBlock = getVaporizedResult(world);
-
-		RedDragonApiMod.LOG.info("world: " + world);
-		RedDragonApiMod.LOG.info("resultBlock: " + resultBlock);
+		final Block resultBlock = getDriedResult(world);
 
 		world.setBlockState(pos, resultBlock.getDefaultState(), 3);
 		world.syncWorldEvent(1501, pos, 0); // ExtingushEvent

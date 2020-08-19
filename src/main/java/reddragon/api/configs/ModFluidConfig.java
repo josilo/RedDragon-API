@@ -23,12 +23,12 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.world.BlockRenderView;
 import reddragon.api.content.BlockHolder;
 import reddragon.api.content.fluids.AbstractFluid;
-import reddragon.api.content.fluids.VaporizingFluidBlock;
+import reddragon.api.content.fluids.DryingFluidBlock;
 import reddragon.api.utils.EnvironmentUtils;
 import reddragon.api.utils.FluidUtils;
 
 public final class ModFluidConfig implements BlockHolder {
-	private VaporizingFluidBlock fluidBlock = null;
+	private DryingFluidBlock fluidBlock = null;
 
 	// Builder parameters:
 
@@ -36,7 +36,7 @@ public final class ModFluidConfig implements BlockHolder {
 	private int levelDecreasePerBlock = 1;
 	private int flowSpeed = 5;
 	private boolean ticksRandomly = false;
-	private final Map<Supplier<Block>, Float> vaporizedResultChances = new HashMap<>();
+	private final Map<Supplier<Block>, Float> dryResults = new HashMap<>();
 
 	// Set during registration:
 
@@ -76,8 +76,8 @@ public final class ModFluidConfig implements BlockHolder {
 	/**
 	 * Allows this fluid to receive random ticks.
 	 * <p>
-	 * When one or more vaporization results are specified this method will be
-	 * called implicitly.
+	 * When one or more drying results are specified this method will be called
+	 * implicitly.
 	 */
 	public ModFluidConfig ticksRandomly() {
 		ticksRandomly = true;
@@ -96,36 +96,36 @@ public final class ModFluidConfig implements BlockHolder {
 	}
 
 	/**
-	 * Adds a possibility to the list of vaporization result blocks.
+	 * Adds a possibility to the list of drying result blocks.
 	 * <p>
-	 * When the fluid vaporizes due to a a random tick, one of the given block
+	 * When the fluid dries due to a a random tick, one of the given block
 	 * possibilities is picked. The weight of each possibility determines the chance
 	 * of this block to be picked.
 	 *
-	 * @param blockHolder The result block of this vaporization possibility.
+	 * @param blockHolder The result block of this drying possibility.
 	 * @param weight      The chance of this possibility in relation to all other
 	 *                    registered possibilities. Higher values in comparison will
 	 *                    make this block more likely to be picked.
 	 */
-	public ModFluidConfig vaporizesTo(final BlockHolder blockHolder, final float weight) {
-		vaporizedResultChances.put(() -> blockHolder.getBlock(), weight);
+	public ModFluidConfig driesTo(final BlockHolder blockHolder, final float weight) {
+		dryResults.put(() -> blockHolder.getBlock(), weight);
 		return ticksRandomly();
 	}
 
 	/**
-	 * Adds a possibility to the list of vaporization result blocks.
+	 * Adds a possibility to the list of drying result blocks.
 	 * <p>
-	 * When the fluid vaporizes due to a a random tick, one of the given block
+	 * When the fluid dries due to a a random tick, one of the given block
 	 * possibilities is picked. The weight of each possibility determines the chance
 	 * of this block to be picked.
 	 *
-	 * @param blockHolder The result block of this vaporization possibility.
+	 * @param blockHolder The result block of this drying possibility.
 	 * @param weight      The chance of this possibility in relation to all other
 	 *                    registered possibilities. Higher values in comparison will
 	 *                    make this block more likely to be picked.
 	 */
-	public ModFluidConfig vaporizesTo(final Block block, final float weight) {
-		vaporizedResultChances.put(() -> block, weight);
+	public ModFluidConfig driesTo(final Block block, final float weight) {
+		dryResults.put(() -> block, weight);
 		return ticksRandomly();
 	}
 
@@ -153,10 +153,10 @@ public final class ModFluidConfig implements BlockHolder {
 			blockSettings.ticksRandomly();
 		}
 
-		fluidBlock = new VaporizingFluidBlock(stillFluid, blockSettings);
+		fluidBlock = new DryingFluidBlock(stillFluid, blockSettings);
 
-		for (final Entry<Supplier<Block>, Float> chance : vaporizedResultChances.entrySet()) {
-			fluidBlock.addVaporizedResultChance(chance.getKey(), chance.getValue());
+		for (final Entry<Supplier<Block>, Float> chance : dryResults.entrySet()) {
+			fluidBlock.addDriedResult(chance.getKey(), chance.getValue());
 		}
 
 		bucketItem = new BucketItem(stillFluid, new Item.Settings().group(itemGroup).recipeRemainder(Items.BUCKET).maxCount(1));
@@ -178,7 +178,7 @@ public final class ModFluidConfig implements BlockHolder {
 	}
 
 	@Override
-	public VaporizingFluidBlock getBlock() {
+	public DryingFluidBlock getBlock() {
 		return fluidBlock;
 	}
 
