@@ -21,6 +21,8 @@ import reddragon.api.RedDragonApiMod;
 
 public class VaporizingFluidBlock extends FluidBlock {
 
+	private static final int MIN_LIGHT_LEVEL_FOR_VAPORIZATION = 13;
+
 	public VaporizingFluidBlock(final FlowableFluid fluid, final Settings properties) {
 		super(fluid, properties);
 	}
@@ -67,7 +69,7 @@ public class VaporizingFluidBlock extends FluidBlock {
 			return false;
 		}
 
-		if (world.getLightLevel(pos.up(), 0) < world.getMaxLightLevel()) {
+		if (world.getLightLevel(pos.up(), 0) < MIN_LIGHT_LEVEL_FOR_VAPORIZATION) {
 			return false;
 		}
 
