@@ -1,8 +1,6 @@
 package reddragon.api.configs;
 
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemGroup;
-import reddragon.api.content.BlockHolder;
 
 public interface RegisterableFluid {
 	/**
@@ -29,14 +27,5 @@ public interface RegisterableFluid {
 
 	default void register() {
 		getConfig().register(getNamespace(), getItemGroup(), name());
-	}
-
-	default void addVaporizedResultChance(final Block block, final float weight) {
-		getConfig().addVaporizedResultChance(() -> block, weight);
-
-	}
-
-	default void addVaporizedResultChance(final BlockHolder blockHolder, final float weight) {
-		getConfig().addVaporizedResultChance(() -> blockHolder.getBlock(), weight);
 	}
 }
