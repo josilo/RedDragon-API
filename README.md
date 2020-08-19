@@ -2,7 +2,7 @@
 <img src="https://raw.githubusercontent.com/TeamRedDragon/RedDragon-API/master/misc/reddragon-api-banner.png">
 </p>
 
-The core API dependency for all RedDragon mods.
+The common API toolkit for all RedDragon mods.
 
 **You don't need to download or install this API. It will be automatically shipped with any release of our mods.**
 
