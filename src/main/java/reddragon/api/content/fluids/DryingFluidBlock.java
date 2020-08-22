@@ -1,14 +1,11 @@
 package reddragon.api.content.fluids;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.fluid.FlowableFluid;
 import net.minecraft.fluid.FluidState;
@@ -17,43 +14,24 @@ import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
+import reddragon.api.random.RandomPicker;
 
 public class DryingFluidBlock extends FluidBlock {
 
 	public static final int MIN_LIGHT_LEVEL_FOR_DRYING = 13;
 
+	private RandomPicker<Block> driedResultPicker = new RandomPicker<>();
+
 	public DryingFluidBlock(final FlowableFluid fluid, final Settings properties) {
 		super(fluid, properties);
 	}
 
-	private class DriedResult {
-		public Supplier<Block> block;
-		public float accumulatedWeight;
-	}
-
-	private final List<DriedResult> driedResults = new ArrayList<>();
-	private float accumulatedWeight;
-
 	public void addDriedResult(final Supplier<Block> block, final float weight) {
-		accumulatedWeight += weight;
-
-		final DriedResult driedResult = new DriedResult();
-		driedResult.accumulatedWeight = accumulatedWeight;
-		driedResult.block = block;
-
-		driedResults.add(driedResult);
+		driedResultPicker = driedResultPicker.withChance(weight, block);
 	}
 
 	public Block getDriedResult(final World world) {
-		final float randomValue = world.random.nextFloat() * accumulatedWeight;
-
-		for (final DriedResult driedResult : driedResults) {
-			if (driedResult.accumulatedWeight >= randomValue) {
-				return driedResult.block.get();
-			}
-		}
-
-		return Blocks.WATER; // should only happen when there are no entries
+		return driedResultPicker.pick(world.random);
 	}
 
 	@Override
