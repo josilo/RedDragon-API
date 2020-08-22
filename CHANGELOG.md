@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.0 (22/08/2020)
+## 1.0.0-mc1.16.1 (22/08/2020)
 - [Updated banner size](https://github.com/TeamRedDragon/RedDragon-API/commit/d1b35609fd576be6f7b5384f2d778f5449f623e1) - @Jilocasin
 - [Added for FoodComponent ModItemConfig maxCount and RecipeRemainder](https://github.com/TeamRedDragon/RedDragon-API/commit/e36fa995c2b67794a01b74b3125e82d734df184c) - @SophiaAska
 - [Added GitHub wiki renderer blend file](https://github.com/TeamRedDragon/RedDragon-API/commit/bbdca47fd295d2e10aaedc787e5389949a9843e2) - @Jilocasin
