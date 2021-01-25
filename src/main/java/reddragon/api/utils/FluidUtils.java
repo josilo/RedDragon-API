@@ -34,7 +34,7 @@ public class FluidUtils {
 
 		// If they're not already present, add the sprites to the block atlas.
 
-		ClientSpriteRegistryCallback.event(SpriteAtlasTexture.BLOCK_ATLAS_TEX).register((atlasTexture, registry) -> {
+		ClientSpriteRegistryCallback.event(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE).register((atlasTexture, registry) -> {
 			registry.register(stillSpriteId);
 			registry.register(flowingSpriteId);
 		});
@@ -57,7 +57,7 @@ public class FluidUtils {
 					@Override
 					public void apply(final ResourceManager resourceManager) {
 						final Function<Identifier, Sprite> atlas = MinecraftClient.getInstance()
-								.getSpriteAtlas(SpriteAtlasTexture.BLOCK_ATLAS_TEX);
+								.getSpriteAtlas(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE);
 
 						fluidSprites[0] = atlas.apply(stillSpriteId);
 						fluidSprites[1] = atlas.apply(flowingSpriteId);
