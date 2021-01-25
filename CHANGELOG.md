@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.0.2-mc1.16.4 (25/01/2021)
+- [Added "fabric": ">=0.28.3+1.16" mod dependency](https://github.com/TeamRedDragon/RedDragon-API/commit/46d29579681eb8bb6833bec018555d417886cbdb) - @Jilocasin
+- [Updated CHANGELOG.md with old release](https://github.com/TeamRedDragon/RedDragon-API/commit/b0850b7ee34dab614b2f8bcac45b876a12b95c4c) - @josilo
+- [Update CHANGELOG.md](https://github.com/TeamRedDragon/RedDragon-API/commit/f71ffaf2e5b262ae8ae54101a31e6329ddfca979) - @josilo
+- [Ported to >=1.16.4](https://github.com/TeamRedDragon/RedDragon-API/commit/09a645c9a0895db0d6a0fcbf9c80b27184f7b3bb) - @josilo
+- [Added RandomPicker helper](https://github.com/TeamRedDragon/RedDragon-API/commit/ae20425eb9245b3ca9232ec045abbfc3373a060e) - @Jilocasin
+- [Changed version to 1.0.1](https://github.com/TeamRedDragon/RedDragon-API/commit/983b9d6e0b81bf8457e405134f376a119fa1eac0) - @Jilocasin
+- [Updated CHANGELOG.md](https://github.com/TeamRedDragon/RedDragon-API/commit/f63d0213a70cd17e7ce96ddbafc780298dd8a5f7) - @Jilocasin
+
+---
+
 ## 1.0.0-mc1.16.1 (22/08/2020)
 - [Updated banner size](https://github.com/TeamRedDragon/RedDragon-API/commit/d1b35609fd576be6f7b5384f2d778f5449f623e1) - @Jilocasin
 - [Added for FoodComponent ModItemConfig maxCount and RecipeRemainder](https://github.com/TeamRedDragon/RedDragon-API/commit/e36fa995c2b67794a01b74b3125e82d734df184c) - @SophiaAska
